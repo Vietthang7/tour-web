@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-// import Tour from "../../models/tour.model";
 import sequelize from "../../config/database";
 import { QueryTypes } from "sequelize";
 // [GET] /tours
@@ -26,7 +25,7 @@ export const index = async (req: Request, res: Response) => {
     if (item["images"]) {
       const arrayImage = JSON.parse(item["images"]);
       if (arrayImage.length > 0) {
-        item["image"] = arrayImage[0]; 
+        item["image"] = arrayImage[0];
       }
     }
     item["price_special"] = parseInt(item["price_special"]);
@@ -34,5 +33,12 @@ export const index = async (req: Request, res: Response) => {
   res.render("client/pages/tours/index", {
     pageTitle: "Danh sách tour",
     tours: tours
+  });
+};
+// [GET] /tours/detail/:slugTour
+export const detail = async (req: Request, res: Response) => {
+  const slugTour = req.params.slugTour;
+  res.render("client/pages/tours/detail", {
+    pageTitle: "Chi tiết tour",
   });
 };
