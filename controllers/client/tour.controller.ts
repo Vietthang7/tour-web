@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import sequelize from "../../config/database";
 import { QueryTypes } from "sequelize";
 import Tour from "../../models/tour.model";
+import moment from "moment";
 // [GET] /tours
 export const index = async (req: Request, res: Response) => {
   // SELECT * FROM tours WHERE deleted = false AND status = "active";
@@ -58,6 +59,9 @@ export const detail = async (req: Request, res: Response) => {
     tour["images"] = JSON.parse(tour["images"]);
     tour["price_special"] = (1 - tour["discount"] / 100) * tour["price"];
     tour["price_special"] = parseInt(tour["price_special"]);
+  }
+  if (tour["timeStart"]) {
+    tour["timeStart"] = moment(tour["timeStart"]).format("DD/MM/YY HH:mm:ss");
   }
   res.render("client/pages/tours/detail", {
     pageTitle: "Chi tiết tour",

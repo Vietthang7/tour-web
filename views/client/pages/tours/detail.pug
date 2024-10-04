@@ -7,9 +7,13 @@ block main
       .row
         .col-6
           .inner-images
-            each image in tour.images
-              .inner-image
-                img(src=image)
+            div(class="swiper tour-images")
+              .swiper-wrapper
+                each image in tour.images
+                  .swiper-slide
+                    .inner-image
+                      img(src=image)
+              .swiper-pagination
         
         .col-6
           .inner-title #{tour.title}
