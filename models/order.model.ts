@@ -37,4 +37,5 @@ const Order = sequelize.define("Order", {
   tableName: 'orders',
   timestamps: true, // Tự động quản lý createdAt và updatedAt
 });
+
 export default Order;
