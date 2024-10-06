@@ -65,6 +65,23 @@ if (formAddToCart) {
 }
 //End Giỏ hàng
 
+// Xóa sản phẩm trong giỏ hàng
+const deleteItemCart = () => {
+  const listButtonDelete = document.querySelectorAll("[btn-delete]");
+  if (listButtonDelete.length > 0) {
+    listButtonDelete.forEach(button => {
+      button.addEventListener("click", () => {
+        const tourId = button.getAttribute("btn-delete");
+        const cart = JSON.parse(localStorage.getItem("cart"));
+        const newCart = cart.filter(item => item.tourId != tourId);
+        localStorage.setItem("cart",JSON.stringify(newCart));
+        window.location.reload(); 
+      })
+    })
+  }
+}
+// End Xóa sản phẩm trong giỏ hàng
+
 // Vẽ tour vào giỏ hàng
 const tableCart = document.querySelector("[table-cart]");
 if (tableCart) {
@@ -94,6 +111,7 @@ if (tableCart) {
       tbody.innerHTML = htmlArray.join("");
       const totalPrice = document.querySelector("[total-price]");
       totalPrice.innerHTML = data.total.toLocaleString();
+      deleteItemCart();
     })
 }
 // End Vẽ tour vào giỏ hàng
