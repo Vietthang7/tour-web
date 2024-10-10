@@ -5,7 +5,8 @@ const sequelize = new Sequelize(
   process.env.DATABASE_PASSWORD, // password
   {
     host: process.env.DATABASE_HOST,
-    dialect: 'mysql'
+    dialect: 'mysql',
+    logging: false
   }
 );
 sequelize.authenticate().then(() => {
