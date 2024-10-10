@@ -1,6 +1,6 @@
 /* Header */
 .header {
-  background: #202020;
+  background: #553F64;
   padding: 10px 0;
   position: sticky;
   top: 0;
@@ -11,13 +11,14 @@
   font-size: 24px;
   font-weight: 700;
   color: #fff;
+  text-decoration: none;
 }
 /* End Header */
 
 /* Body */
 .body .sider {
   width: 150px;
-  background: #323232;
+  background: #553F64;
   color: #fff;
   height: calc(100vh - 56px);
   position: fixed;
@@ -45,6 +46,11 @@
   display: block;
   padding: 6px 10px;
   border-bottom: 1px solid #515151;
+  text-decoration: none;
+}
+.sider .inner-menu ul li :hover { 
+  background: rgb(173, 69, 31);
+  color: black;
 }
 /* End Sider */
 
