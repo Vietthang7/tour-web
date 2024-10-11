@@ -124,23 +124,43 @@ export const edit = async (req: Request, res: Response) => {
 }
 // [POST] /admin/tours/edit/:id
 export const editPatch = async (req: Request, res: Response) => {
-  const id: string = req.params.id;
-  const dataTour = {
-    title: req.body.title,
-    price: parseInt(req.body.price),
-    discount: parseInt(req.body.discount),
-    stock: parseInt(req.body.stock),
-    timeStart: req.body.timeStart,
-    position: req.body.position,
-    status: req.body.status,
-    images: JSON.stringify(req.body.images),
-    information: req.body.information,
-    schedule: req.body.schedule
-  };
-  await Tour.update(dataTour, {
-    where: {
-      id: id
-    }
-  });
-  res.send("ok");
+  try {
+    const id: string = req.params.id;
+    const dataTour = {
+      title: req.body.title,
+      price: parseInt(req.body.price),
+      discount: parseInt(req.body.discount),
+      stock: parseInt(req.body.stock),
+      timeStart: req.body.timeStart,
+      position: req.body.position,
+      status: req.body.status,
+      images: JSON.stringify(req.body.images),
+      information: req.body.information,
+      schedule: req.body.schedule
+    };
+    await Tour.update(dataTour, {
+      where: {
+        id: id
+      }
+    });
+    const categoryIds = req.body.category_id.map((item) => parseInt(item, 10));
+    await TourCategory.destroy({
+      where: {
+        tour_id: id, // Sử dụng tour_id  
+      }
+    });
+    const idtour = parseInt(id, 10);
+
+    // Thêm các bản ghi mới cho categoryIds  
+    const tourCategoryPromises = categoryIds.map(category_id => {
+      return TourCategory.create({ tour_id: idtour, category_id });
+    });
+
+    await Promise.all(tourCategoryPromises); // Chờ tất cả các promise hoàn thành
+    req.flash('success', 'Cập nhật tour thành công!');
+    res.redirect(`back`);
+  } catch (error) {
+    res.redirect(`/${systemConfig.prefixAdmin}/tours`);
+  }
+
 }

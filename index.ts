@@ -3,6 +3,8 @@ import dotenv from "dotenv";
 dotenv.config();
 import sequelize from "./config/database";
 sequelize;
+import flash from 'express-flash';
+import session from 'express-session';
 import bodyParser from "body-parser";
 import { systemConfig } from "./config/system";
 import path from "path";
@@ -21,6 +23,14 @@ app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce
 app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
+app.use(session({
+  secret: process.env.SESSION_SECRET, // Thay đổi secret này cho phù hợp  
+  resave: false,
+  saveUninitialized: true,
+  cookie: { maxAge: 60000 }
+}));
+// app.use(flash());
+app.use(flash());
 
 app.locals.prefixAdmin = systemConfig.prefixAdmin;
 adminRoutes(app);

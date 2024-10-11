@@ -85,18 +85,16 @@ block main
           class="form-control"
           id="information"
           name="information"
-          value=tour.information
           textarea-mce
-        )
+        ) !{tour.information}
       div(class="form-group")
         label(for="schedule") Lịch trình tour
         textarea(
           class="form-control"
           id="schedule"
           name="schedule"
-          value=tour.schedule
           textarea-mce
-        )
+        ) !{tour.schedule}
       div(class="form-group")
         label(for="position") Vị trí
         input(
