@@ -18,4 +18,15 @@ router.post(
   controller.createPost
 );
 router.get("/edit/:id", controller.edit);
+router.patch(
+  "/edit/:id",
+  upload.fields([
+    {
+      name: "images",
+      maxCount: 6
+    }
+  ]),
+  uploadCloud.uploadFields,
+  controller.editPatch
+);
 export const tourRoutes: Router = router;

@@ -4,7 +4,7 @@ block main
   h1(class="mb-4") #{pageTitle}
 
   form(
-      action=`/${prefixAdmin}/tours/${tour.id}?_method=PATCH`
+      action=`/${prefixAdmin}/tours/edit/${tour.id}?_method=PATCH`
       method="POST"
       enctype="multipart/form-data"
     )
@@ -37,7 +37,7 @@ block main
         id="images"
         name="images"
         accept="image/*"
-        value=tour.images
+        multiple
       )
       div(class="form-group")
         label(for="price") Giá

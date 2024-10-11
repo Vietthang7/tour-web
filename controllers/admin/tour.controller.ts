@@ -122,3 +122,25 @@ export const edit = async (req: Request, res: Response) => {
     tour: tour
   })
 }
+// [POST] /admin/tours/edit/:id
+export const editPatch = async (req: Request, res: Response) => {
+  const id: string = req.params.id;
+  const dataTour = {
+    title: req.body.title,
+    price: parseInt(req.body.price),
+    discount: parseInt(req.body.discount),
+    stock: parseInt(req.body.stock),
+    timeStart: req.body.timeStart,
+    position: req.body.position,
+    status: req.body.status,
+    images: JSON.stringify(req.body.images),
+    information: req.body.information,
+    schedule: req.body.schedule
+  };
+  await Tour.update(dataTour, {
+    where: {
+      id: id
+    }
+  });
+  res.send("ok");
+}
