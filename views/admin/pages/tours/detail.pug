@@ -1,0 +1,47 @@
+extends ../../layouts/default.pug
+
+block main
+  if (tour.title)
+    h3 Tên Tour:
+      h6(class="mb-4") #{tour.title}
+  if (categories)
+    h3 Danh mục:
+      each category in categories
+        h6(class="mb-4") #{category.title}
+  if(tour.images)
+    div(class="form-group")  
+      h3 Ảnh đã tải lên:  
+        each url in tour.images  
+          div(class="existing-image mb-2 mt-3")  
+            img(src=url, alt="Ảnh đã tải lên", class="img-thumbnail", width="200")
+  if (tour.price)
+    h3 Giá:
+      h6(class="mb-4") #{tour.price.toLocaleString()}đ
+  if (tour.price)
+    h3 % Giảm giá:
+      h6(class="mb-4") #{tour.discount}%
+  if (tour.price)
+    h3 Giá đặc biệt:
+      h6(class="mb-4") #{tour.price_special.toLocaleString()}đ
+  if (tour.price)
+    h3 Còn lại:
+      h6(class="mb-4") #{tour.stock}
+  if (tour.price)
+    h3 Vị trí:
+      h6(class="mb-4") #{tour.position}
+  if (tour.status)
+    div(class="mb-4")
+      h3 Trạng thái:
+      if (tour.status === "active")
+        span(class="badge badge-success") Hoạt động
+      else
+        span(class="badge badge-danger") Dừng hoạt động
+
+  if (tour.information)
+    div(class="mb-4") 
+      h3 Mô tả:
+        h6 !{tour.information}
+  if (tour.schedule)
+    div(class="mb-4") 
+      h3 Lịch trình:
+        h6 !{tour.schedule}

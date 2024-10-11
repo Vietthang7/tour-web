@@ -162,5 +162,73 @@ export const editPatch = async (req: Request, res: Response) => {
   } catch (error) {
     res.redirect(`/${systemConfig.prefixAdmin}/tours`);
   }
-
+}
+// [GET] /admin/tours/detail/:id
+export const detail = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+    const tour = await Tour.findOne({
+      where: {
+        id: id,
+        deleted: false,
+      },
+      raw: true
+    });
+    if (tour["images"]) {
+      tour["images"] = JSON.parse(tour["images"]);
+    }
+    tour["timeStart"] = formatDateTimeLocal(tour["timeStart"]);
+    tour["price_special"] = (tour["price"] * (1 - tour["discount"] / 100));
+    //Lấy danh mục  của tour từ bảng TourCategory
+    const tourCategories: ITourCategory[] = await TourCategory.findAll({
+      where: {
+        tour_id: id,
+      },
+      raw: true,
+    });
+    //Lấy ra danh mục của tour
+    const categoryIds = tourCategories.map(category => category.category_id);
+    const categories = await Category.findAll({
+      where: {
+        id: categoryIds,
+        deleted: false,
+        status: "active",
+      },
+      attributes: ['title'], // Chỉ lấy trường 'title' và 'id'
+      raw: true
+    });
+    res.render("admin/pages/tours/detail", {
+      pageTitle: "Chi tiết tour",
+      categories: categories,
+      tour: tour
+    });
+  } catch (error) {
+    res.redirect(`${systemConfig.prefixAdmin}/tours`);
+  }
+}
+//[PATCH]/admin/tours/delete/:id
+export const deleteTour = async (req: Request, res: Response) => {
+  // if (res.locals.role.permissions.includes("songs_delete")) {
+  try {
+    const id = req.params.id;
+    await TourCategory.destroy({
+      where: {
+        tour_id: id
+      }
+    });
+    await Tour.destroy({
+      where: {
+        id: id,
+      }
+    });
+    req.flash('success', 'Đã xóa!');
+    res.json({
+      code: 200
+    })
+  } catch (error) {
+    res.redirect(`/${systemConfig.prefixAdmin}/tours`);
+  }
+  // } else {
+  //   res.send(`403`);
+  // }
 }
