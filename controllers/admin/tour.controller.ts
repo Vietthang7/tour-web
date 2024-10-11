@@ -232,3 +232,31 @@ export const deleteTour = async (req: Request, res: Response) => {
   //   res.send(`403`);
   // }
 }
+// [PATCH] /admin/songs/change-status/:statusChange/:id
+export const changeStatus = async (req: Request, res: Response) => {
+  // if (res.locals.role.permissions.includes("songs_edit")) {
+  try {
+    const {
+      id,
+      statusChange
+    } = req.params;
+    await Tour.update({
+      status: statusChange
+    }, {
+      where: {
+        id: id
+      }
+    });
+    req.flash('success', 'Cập nhật trạng thái thành công!');
+
+    res.json({
+      code: 200
+    });
+  } catch (error) {
+    res.redirect(`/${systemConfig.prefixAdmin}/tours`);
+  }
+}
+// else {
+//   res.send(`403`);
+// }
+// }

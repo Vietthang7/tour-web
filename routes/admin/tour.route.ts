@@ -31,4 +31,5 @@ router.patch(
 );
 router.get("/detail/:id", controller.detail);
 router.patch("/delete/:id", controller.deleteTour);
+router.patch("/change-status/:statusChange/:id", controller.changeStatus);
 export const tourRoutes: Router = router;

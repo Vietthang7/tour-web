@@ -51,15 +51,17 @@ block main
                 td #{item.stock}
                 td
                   if (item.status === "active")
-                    a(
-                      href="javascript:;"
+                    button(
+                      link=`/${prefixAdmin}/tours/change-status/inactive/${item.id}` 
                       class="badge badge-success"
-                    ) Hoạt động
+                      button-change-status
+                      ) Hoạt động
                   else
-                    a(
-                      href="javascript:;"
+                    button(
+                      link=`/${prefixAdmin}/tours/change-status/active/${item.id}` 
                       class="badge badge-danger"
-                    ) Dừng hoạt động
+                      button-change-status
+                      ) Dừng hoạt động
                 td #{item.position}
                 td
                   a(
