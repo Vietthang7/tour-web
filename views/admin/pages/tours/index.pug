@@ -31,6 +31,8 @@ block main
               th Còn lại
               th Trạng thái
               th Vị trí
+              th Tạo mới
+              th Cập nhật
               th Hành động
 
           tbody
@@ -63,6 +65,12 @@ block main
                       button-change-status
                       ) Dừng hoạt động
                 td #{item.position}
+                td #{item.formattedCreatedAt}
+                  td 
+                    if item.formattedUpdatedAt !== item.formattedCreatedAt  
+                      | #{item.formattedUpdatedAt}  
+                    else  
+                      | Chưa sửa lần nào
                 td
                   a(
                     class="btn btn-secondary btn-sm"

@@ -6,6 +6,7 @@ import { generateTourCode } from "../../helpers/generate.helper";
 import { systemConfig } from "../../config/system";
 import TourCategory, { ITourCategory } from "../../models/tour-category.model";
 import { formatDateTimeLocal } from "../../helpers/formatDateTimeLocal.hellper";
+import moment from "moment";
 //[GET]/admin/tours
 export const index = async (req: Request, res: Response) => {
   //SELECT * FROM tours WHERE deleted = false;
@@ -22,6 +23,16 @@ export const index = async (req: Request, res: Response) => {
       item["image"] = images[0];
     }
     item["price_special"] = (item["price"] * (1 - item["discount"] / 100));
+    if (item["createdAt"]) {
+      const formattedDate = moment(item["createdAt"]).format("DD/MM/YY HH:mm:ss");
+      // Bạn có thể tạo một thuộc tính mới để lưu trữ ngày đã được định dạng  
+      item["formattedCreatedAt"] = formattedDate; // Lưu ngày đã định dạng vào một thuộc tính mới  
+    }
+    if (item["updatedAt"]) {
+      const formattedDate = moment(item["updatedAt"]).format("DD/MM/YY HH:mm:ss");
+      // Bạn có thể tạo một thuộc tính mới để lưu trữ ngày đã được định dạng  
+      item["formattedUpdatedAt"] = formattedDate; // Lưu ngày đã định dạng vào một thuộc tính mới  
+    }
   });
   res.render("admin/pages/tours/index", {
     pageTitle: "Danh sách tour",
