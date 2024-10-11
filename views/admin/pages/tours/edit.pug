@@ -1,0 +1,135 @@
+extends ../../layouts/default.pug
+
+block main
+  h1(class="mb-4") #{pageTitle}
+
+  form(
+      action=`/${prefixAdmin}/tours/${tour.id}?_method=PATCH`
+      method="POST"
+      enctype="multipart/form-data"
+    )
+      div(class="form-group")
+        label(for="title") Tiêu đề
+        input(
+          type="text"
+          class="form-control"
+          id="title"
+          name="title"
+          required
+          value=tour.title
+        )
+      div(class="form-group ")
+        label Danh mục  
+        each item in categories  
+          div  
+            input(  
+              type="checkbox"  
+              id="category-#{item.id}"  
+              name="category_id"  
+              value=item.id  
+              checked=(categoryIds.includes(item.id) ? true : false)  
+            )  
+            label(for="category-#{item.id}") #{item.title}  
+      label(for="images") Chọn nhiều ảnh
+      input(
+        type="file"
+        class="form-control-file"
+        id="images"
+        name="images"
+        accept="image/*"
+        value=tour.images
+      )
+      div(class="form-group")
+        label(for="price") Giá
+        input(
+          type="number"
+          class="form-control"
+          id="price"
+          name="price"
+          min="0"
+          value = tour.price
+        )
+      div(class="form-group")
+        label(for="discount") % Giảm giá
+        input(
+          type="number"
+          class="form-control"
+          id="discount"
+          name="discount"
+          value=tour.discount
+          min="0"
+        )
+      div(class="form-group")
+        label(for="stock") Số lượng
+        input(
+          type="number"
+          class="form-control"
+          id="stock"
+          name="stock"
+          value=tour.stock
+          min="0"
+        )
+      div(class="form-group")
+        label(for="timeStart") Lịch khởi hành
+        input(
+          type="datetime-local"
+          class="form-control"
+          id="timeStart"
+          name="timeStart"
+          value=tour.timeStart
+          min="0"
+        )
+      div(class="form-group")
+        label(for="information") Thông tin tour
+        textarea(
+          class="form-control"
+          id="information"
+          name="information"
+          value=tour.information
+          textarea-mce
+        )
+      div(class="form-group")
+        label(for="schedule") Lịch trình tour
+        textarea(
+          class="form-control"
+          id="schedule"
+          name="schedule"
+          value=tour.schedule
+          textarea-mce
+        )
+      div(class="form-group")
+        label(for="position") Vị trí
+        input(
+          type="number"
+          class="form-control"
+          id="position"
+          name="position"
+          placeholder="Tự động tăng"
+          min="1"
+          value =tour.position
+        )
+      div(class="form-group form-check form-check-inline")
+        input(
+          type="radio"
+          class="form-check-input"
+          id="statusActive"
+          name="status"
+          value="active"
+          checked=(tour.status == "active" ? true : false)
+        )
+        label(for="statusActive" class="form-check-label") Hoạt động
+      div(class="form-group form-check form-check-inline")
+        input(
+          type="radio"
+          class="form-check-input"
+          id="statusInActive"
+          name="status"
+          value="inactive"
+          checked=(tour.status == "inactive" ? true : false)
+        )
+        label(for="statusInActive" class="form-check-label") Dừng hoạt động
+      div(class="form-group")
+        button(
+          type="submit"
+          class="btn btn-primary"
+        ) Cập nhật

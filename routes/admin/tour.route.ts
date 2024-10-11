@@ -17,4 +17,5 @@ router.post(
   uploadCloud.uploadFields,
   controller.createPost
 );
+router.get("/edit/:id", controller.edit);
 export const tourRoutes: Router = router;
