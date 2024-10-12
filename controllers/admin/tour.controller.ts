@@ -4,7 +4,7 @@ import Category from "../../models/category.model";
 import slugify from "slugify";
 import { generateTourCode } from "../../helpers/generate.helper";
 import { systemConfig } from "../../config/system";
-import TourCategory, { ITourCategory } from "../../models/tour-category.model";
+import TourCategory from "../../models/tour-category.model";
 import { formatDateTimeLocal } from "../../helpers/formatDateTimeLocal.hellper";
 import moment from "moment";
 //[GET]/admin/tours
@@ -16,7 +16,6 @@ export const index = async (req: Request, res: Response) => {
     },
     raw: true
   });
-
   tours.forEach(item => {
     if (item["images"]) {
       const images = JSON.parse(item["images"]);
@@ -118,14 +117,14 @@ export const edit = async (req: Request, res: Response) => {
   });
 
   //Lấy danh mục  của tour từ bảng TourCategory
-  const tourCategories: ITourCategory[] = await TourCategory.findAll({
+  const tourCategories = await TourCategory.findAll({
     where: {
       tour_id: id,
     },
     raw: true,
   });
   // Chuyển đổi tourCategories thành mảng category_id  
-  const categoryIds = tourCategories.map((item) => item.category_id);
+  const categoryIds = tourCategories.map((item) => item["category_id"]);
   res.render("admin/pages/tours/edit", {
     pageTitle: "Chỉnh sửa tour",
     categories: categories,
@@ -191,14 +190,14 @@ export const detail = async (req: Request, res: Response) => {
     tour["timeStart"] = formatDateTimeLocal(tour["timeStart"]);
     tour["price_special"] = (tour["price"] * (1 - tour["discount"] / 100));
     //Lấy danh mục  của tour từ bảng TourCategory
-    const tourCategories: ITourCategory[] = await TourCategory.findAll({
+    const tourCategories = await TourCategory.findAll({
       where: {
         tour_id: id,
       },
       raw: true,
     });
     //Lấy ra danh mục của tour
-    const categoryIds = tourCategories.map(category => category.category_id);
+    const categoryIds = tourCategories.map(category => category["category_id"]);
     const categories = await Category.findAll({
       where: {
         id: categoryIds,

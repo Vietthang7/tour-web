@@ -1,28 +1,28 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../config/database";
 
-const TourCategory = sequelize.define("TourCategory", {
-  tour_id: {
+const RoleAccount = sequelize.define("RoleAccount", {
+  role_id: {
     type: DataTypes.INTEGER,
     allowNull: false,
     primaryKey: true,
     references: {
-      model: 'tours', // Tên bảng mà khóa ngoại tham chiếu đến
+      model: 'roles', // Tên bảng mà khóa ngoại tham chiếu đến
       key: 'id', // Tên trường trong bảng mà khóa ngoại tham chiếu đến
     }
   },
-  category_id: {
+  account_id: {
     type: DataTypes.INTEGER,
     allowNull: false,
     primaryKey: true,
     references: {
-      model: 'categories', // Tên bảng mà khóa ngoại tham chiếu đến
+      model: 'accounts', // Tên bảng mà khóa ngoại tham chiếu đến
       key: 'id', // Tên trường trong bảng mà khóa ngoại tham chiếu đến
     }
   }
 }, {
-  tableName: 'tours_categories',
+  tableName: 'accounts_roles',
   timestamps: false,
 });
 
-export default TourCategory;
+export default RoleAccount;
