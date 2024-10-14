@@ -3,19 +3,27 @@
     ul
       li
         a(href=`/${prefixAdmin}/dashboard`) Tổng quan
-      li
-        a(href=`/${prefixAdmin}/categories`) Quản lý danh mục
-      li
-        a(href=`/${prefixAdmin}/tours`) Quản lý tour
-      li
-        a(href=`/${prefixAdmin}/roles`) Nhóm quyền
-      li
-        a(href=`/${prefixAdmin}/roles/permissions`) Phân quyền
-      li
-        a(href=`/${prefixAdmin}/orders`) Đơn hàng
-      li
-        a(href=`/${prefixAdmin}/accounts`) Tài khoản admin
-      li
-        a(href=`/${prefixAdmin}/users`) Tài khoản user
-      li
-        a(href=`/${prefixAdmin}/settings/general`) Cài đặt chung
+      if(role.permissions.includes("categories_view"))
+        li
+          a(href=`/${prefixAdmin}/categories`) Quản lý danh mục
+      if(role.permissions.includes("tours_view"))
+        li
+          a(href=`/${prefixAdmin}/tours`) Quản lý tour
+      if(role.permissions.includes("roles_view"))
+        li
+          a(href=`/${prefixAdmin}/roles`) Nhóm quyền
+      if(role.permissions.includes("roles_permissions"))
+        li
+          a(href=`/${prefixAdmin}/roles/permissions`) Phân quyền
+      if(role.permissions.includes("orders_view"))
+        li
+          a(href=`/${prefixAdmin}/orders`) Đơn hàng
+      if(role.permissions.includes("accounts_view"))
+        li
+          a(href=`/${prefixAdmin}/accounts`) Tài khoản admin
+      if(role.permissions.includes("users_view"))
+        li
+          a(href=`/${prefixAdmin}/users`) Tài khoản user
+      if(role.permissions.includes("settings-general_view"))
+        li
+          a(href=`/${prefixAdmin}/settings/general`) Cài đặt chung
