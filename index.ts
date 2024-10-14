@@ -5,6 +5,7 @@ import sequelize from "./config/database";
 sequelize;
 import flash from 'express-flash';
 import session from 'express-session';
+import cookieParser from 'cookie-parser';
 import bodyParser from "body-parser";
 import { systemConfig } from "./config/system";
 import path from "path";
@@ -23,6 +24,7 @@ app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce
 app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
+app.use(cookieParser('HHKALKS'));
 app.use(session({
   secret: process.env.SESSION_SECRET, // Thay đổi secret này cho phù hợp  
   resave: false,
@@ -31,6 +33,14 @@ app.use(session({
 }));
 // app.use(flash());
 app.use(flash());
+setInterval(async () => {  
+  try {  
+    await sequelize.query("DELETE FROM forgotpassword WHERE expireAt < NOW()");  
+    // console.log("Xóa các bản ghi quá hạn thành công");  
+  } catch (error) {  
+    console.error("Lỗi khi xóa bản ghi quá hạn:", error);  
+  }  
+}, 60 * 1000); // Kiểm tra mỗi phút  
 
 app.locals.prefixAdmin = systemConfig.prefixAdmin;
 adminRoutes(app);

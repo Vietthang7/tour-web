@@ -152,6 +152,7 @@ if (formOrder) {
       info: {
         fullName: formOrder.fullName.value,
         phone: formOrder.phone.value,
+        address: formOrder.address.value,
         note: formOrder.note.value,
       },
       cart: cart

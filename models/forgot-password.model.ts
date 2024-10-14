@@ -19,7 +19,7 @@ const ForgotPassword = sequelize.define("ForgotPassword", {
     type: DataTypes.STRING(8),
     allowNull: false,
   },
-  expiryTime: {
+  expireAt: {
     type: DataTypes.DATE,
     allowNull: false,
   }

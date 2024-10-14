@@ -31,11 +31,7 @@ const Account = sequelize.define("Account", {
   status: {  
     type: DataTypes.STRING(20),  
     allowNull: false,  
-  },  
-  role_id: {  
-    type: DataTypes.INTEGER, // Sử dụng INTEGER cho khóa ngoại  
-    allowNull: false,  
-  },  
+  },
   avatar: {  
     type: DataTypes.TEXT('long'),  
     allowNull: false,  

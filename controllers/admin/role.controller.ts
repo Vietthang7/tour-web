@@ -17,7 +17,7 @@ export const index = async (req: Request, res: Response) => {
     if (record["createdBy"]) {
       const accountCreated = await Account.findOne({
         where: {
-          _id: record["createdBy"]
+          id: record["createdBy"]
         }
       });
       record["createdByFullName"] = accountCreated["fullName"];
@@ -51,14 +51,14 @@ export const create = async (req: Request, res: Response) => {
 };
 //[POST] /admin/roles/create
 export const createPost = async (req: Request, res: Response) => {
-  // if (res.locals.role.permissions.includes("roles_create")) {
-  //   req.body.createdBy = res.locals.account.id;
-  await Role.create(req.body);
-  req.flash("success", "Tạo mới nhóm quyền thành công");
-  res.redirect(`/${systemConfig.prefixAdmin}/roles`);
-  // } else {
-  //   res.send(`403`);
-  // }
+  if (res.locals.role.permissions.includes("roles_create")) {
+    req.body.createdBy = res.locals.account.id;
+    await Role.create(req.body);
+    req.flash("success", "Tạo mới nhóm quyền thành công");
+    res.redirect(`/${systemConfig.prefixAdmin}/roles`);
+  } else {
+    res.send(`403`);
+  }
 }
 // [GET] /admin/roles/permissions
 export const permissions = async (req: Request, res: Response) => {
@@ -82,25 +82,25 @@ export const permissions = async (req: Request, res: Response) => {
 };
 // [PATCH] /admin/roles/permissions
 export const permissionsPatch = async (req: Request, res: Response) => {
-  // if (res.locals.role.permissions.includes("roles_permissions")) {
-  const roles = req.body;
-  for (const role of roles) {
-    const data = {
-      permissions: JSON.stringify(role.permissions)
-    }
-    await Role.update(data, {
-      where: {
-        id: role.id,
-        deleted: false
+  if (res.locals.role.permissions.includes("roles_permissions")) {
+    const roles = req.body;
+    for (const role of roles) {
+      const data = {
+        permissions: JSON.stringify(role.permissions)
       }
-    });
-  }
+      await Role.update(data, {
+        where: {
+          id: role.id,
+          deleted: false
+        }
+      });
+    }
 
-  res.json({
-    code: 200,
-    message: "Cập nhật thành công!"
-  });
-  // } else {
-  //   res.send(`403`);
-  // }
+    res.json({
+      code: 200,
+      message: "Cập nhật thành công!"
+    });
+  } else {
+    res.send(`403`);
+  }
 }

@@ -13,6 +13,7 @@ export const index = async (req: Request, res: Response) => {
     fullName: data.info.fullName,
     phone: data.info.phone,
     note: data.info.note,
+    address: data.info.address,
     status: "initial",
   };
   const order = await Order.create(dataOrders);
@@ -47,6 +48,17 @@ export const index = async (req: Request, res: Response) => {
     dataItem["discount"] = tourInfo["discount"];
     dataItem["timeStart"] = tourInfo["timeStart"];
     await OrderItem.create(dataItem);
+    // // Cập nhật stock của tour  
+    const newStock = tourInfo["stock"] - item.quantity;
+    // Kiểm tra xem stock có đủ không  
+    if (newStock < 0) {
+      res.json({ code: 400, message: "Số lượng tồn kho không đủ." });
+      return;
+    }
+    await Tour.update(
+      { stock: newStock },
+      { where: { id: item.tourId } }
+    );
   }
   // Hết Lưu data vào bảng orders_item
   res.json({

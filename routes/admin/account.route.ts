@@ -15,16 +15,16 @@ router.post(
   createPostAccount,
   controller.createPost
 );
-// router.get("/edit/:id",controller.edit);
-// router.patch(
-//   "/edit/:id",
-//   upload.single('avatar'),
-//   uploadCloud.uploadSingle,
-//   editPatchAccount,
-//   controller.editPatch
-// );
-// router.get("/detail/:id",controller.detail);
-// router.patch("/delete/:id",controller.deleteItem);
-// router.patch("/change-status/:statusChange/:id", controller.changeStatus);
-// router.patch("/change-multi", controller.changeMulti);
+router.get("/edit/:id",controller.edit);
+router.patch(
+  "/edit/:id",
+  upload.single('avatar'),
+  uploadCloud.uploadSingle,
+  editPatchAccount,
+  controller.editPatch
+);
+router.get("/detail/:id",controller.detail);
+router.patch("/delete/:id",controller.deleteItem);
+router.patch("/change-status/:statusChange/:id", controller.changeStatus);
+router.patch("/change-multi", controller.changeMulti);
 export const accountRoute = router;
