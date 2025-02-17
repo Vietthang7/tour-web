@@ -67,4 +67,8 @@ export const detail = async (req: Request, res: Response) => {
     pageTitle: "Chi tiết tour",
     tour: tour
   });
+  // res.json({
+  //   message: "Success",
+  //   data: tour
+  // });
 };
