@@ -1,31 +1,47 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
-
-name: Node.js CI
+name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    branches:
+      - main  # Chạy khi push lên branch main
 
 jobs:
-  build:
-
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [18.x, 20.x, 22.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+  build-and-deploy:
+    runs-on: ubuntu-latest  # Máy ảo chạy CI/CD
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: npm ci
-    - run: npm run build --if-present
-    - run: npm test
+      # Checkout mã nguồn
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Cài Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'  # Phiên bản Node.js bạn dùng
+
+      # Cài dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # Build TypeScript
+      - name: Build project
+        run: npm run build
+
+      # Deploy lên server
+      - name: Deploy to server
+        env:
+          PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          HOST: ${{ secrets.HOST }}
+          USER: ${{ secrets.USER }}
+          TARGET: ${{ secrets.TARGET }}
+        run: |
+          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER}@${HOST} << 'EOF'
+            cd ${TARGET}
+            git pull origin main || git clone your_repo_url .
+            npm install
+            npm run build
+            pm2 restart tour-web || pm2 start dist/index.js --name tour-web
+          EOF
+          rm private_key
